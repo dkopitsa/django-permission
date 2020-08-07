@@ -2,9 +2,8 @@
 """
 permission_required decorator for generic classbased/functionbased view
 """
-from functools import wraps
+from functools import wraps, WRAPPER_ASSIGNMENTS
 from django.http import HttpRequest
-from django.utils.decorators import available_attrs
 from django.core.exceptions import PermissionDenied
 from permission.decorators.utils import redirect_to_login
 
@@ -45,7 +44,7 @@ def permission_required(perm, queryset=None,
     ...     pass
     """
     def wrapper(view_method):
-        @wraps(view_method, assigned=available_attrs(view_method))
+        @wraps(view_method, assigned=WRAPPER_ASSIGNMENTS)
         def inner(self, request=None, *args, **kwargs):
             if isinstance(self, HttpRequest):
                 from permission.decorators.functionbase import \
